@@ -265,6 +265,31 @@
         
         // 将changeMonth函数添加到全局作用域
         window.changeMonth = changeMonth;
+
+        // 每隔一定时间自动刷新页面
+        setTimeout(function() {
+            window.location.reload();
+        }, 3600000); // 例如每小时刷新一次
+
+        // 修改您现有的代码，添加数据版本检查
+        async function checkForUpdates() {
+            try {
+                // 检查是否有新数据
+                const response = await fetch('数据文件的URL');
+                const newData = await response.json();
+                
+                // 如果有新数据，更新页面
+                if (newData.version !== currentVersion) {
+                    kpopData = newData.data;
+                    displayReleases();
+                }
+            } catch (error) {
+                console.log('检查更新失败');
+            }
+        }
+
+        // 每5分钟检查一次更新
+        setInterval(checkForUpdates, 300000);
     </script>
 </body>
 </html>
